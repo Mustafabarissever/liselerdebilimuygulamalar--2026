@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liselerde Bilim Uygulamaları Sergisi</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+
+  :root {
+    --bg: #f0f4f8;
+    --surface: #ffffff;
+    --surface2: #e8eef5;
+    --primary: #1a3a5c;
+    --accent: #e8a020;
+    --accent2: #2e7d9e;
+    --text: #1a2535;
+    --text-light: #5a6a7e;
+    --border: #d0dce8;
+    --star-on: #e8a020;
+    --star-off: #d0dce8;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(26,58,92,0.10);
+    --shadow-hover: 0 8px 36px rgba(26,58,92,0.18);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--primary);
+    color: #fff;
+    text-align: center;
+    padding: 36px 20px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #0d2540 0%, #1a3a5c 50%, #1e4d72 100%);
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(232,160,32,0.12);
+  }
+  .header-inner { position: relative; z-index: 1; }
+  .header-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+  header h1 {
+    font-size: clamp(1.4rem, 5vw, 2.2rem);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+  }
+  header p {
+    font-size: 1rem;
+    opacity: 0.9;
+    font-weight: 400;
+  }
+  .header-themes {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+  .coordinator-box {
+    display: inline-block;
+    background: rgba(255,255,255,0.1);
+    padding: 6px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.15);
+    margin-top: 8px;
+  }
+  .header-stats {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    margin-top: 22px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+  }
+  .stat-lbl {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ── SEARCH BAR ── */
+  .search-wrap {
+    max-width: 520px;
+    margin: 28px auto 0;
+    padding: 0 16px;
+  }
+  .search-box {
+    width: 100%;
+    padding: 14px 20px 14px 46px;
+    border-radius: 50px;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='8' stroke='%235a6a7e' stroke-width='2'/%3E%3Cpath d='M21 21l-4.35-4.35' stroke='%235a6a7e' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 16px center;
+  }
+  .search-box:focus {
+    border-color: var(--accent2);
+    box-shadow: 0 0 0 3px rgba(46,125,158,0.12);
+  }
+
+  /* ── GRID ── */
+  .grid-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 16px 60px;
+  }
+  .grid-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-light);
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 22px;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform .22s ease, box-shadow .22s ease;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+  }
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+  }
+  .card-img-wrap {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: var(--surface2);
+    overflow: hidden;
+    position: relative;
+  }
+  .card-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    transition: transform .3s ease;
+    background: #fff;
+  }
+  .card:hover .card-img-wrap img { transform: none; }
+  .card-no {
+    position: absolute;
+    top: 10px; left: 10px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+  .img-placeholder {
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #dde7f2 0%, #c5d5e8 100%);
+    gap: 10px;
+  }
+  .img-placeholder svg { opacity: 0.4; }
+  .img-placeholder span { font-size: 11px; color: var(--text-light); }
+
+  .card-body { padding: 18px 18px 14px; flex: 1; display: flex; flex-direction: column; }
+  .card-tag {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent2);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+  .card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.35;
+    margin-bottom: 8px;
+  }
+  .card-summary {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    line-height: 1.5;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .stars-display { display: flex; gap: 3px; }
+  .stars-display span { font-size: 16px; color: var(--star-off); cursor: pointer; transition: color .1s, transform .1s; user-select: none; }
+  .stars-display span.lit { color: var(--star-on); }
+  .stars-display span:hover { transform: scale(1.2); }
+
+  .btn-detail {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .18s, transform .18s;
+  }
+  .btn-detail:hover { background: var(--accent2); transform: scale(1.04); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10,25,40,0.65);
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 20px 12px 40px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { display: block; }
+  .modal {
+    background: var(--surface);
+    border-radius: 20px;
+    max-width: 680px;
+    margin: 0 auto;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.28);
+    animation: slideUp .28s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .modal-img-wrap {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: var(--surface2);
+    position: relative;
+    overflow: hidden;
+  }
+  .modal-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    background: #fff;
+  }
+  .modal-close {
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 38px; height: 38px;
+    background: rgba(255,255,255,0.9);
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text);
+    font-weight: 700;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    transition: background .15s;
+    z-index: 10;
+  }
+  .modal-close:hover { background: #fff; }
+
+  .modal-body { padding: 28px 28px 32px; }
+  .modal-badge {
+    display: inline-block;
+    background: var(--surface2);
+    color: var(--accent2);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .modal-title {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1.25;
+    margin-bottom: 20px;
+  }
+
+  .modal-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  @media (max-width: 480px) { .modal-info-grid { grid-template-columns: 1fr; } }
+
+  .info-card {
+    background: var(--surface2);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .info-card-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-light);
+    margin-bottom: 5px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .info-card-value {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .modal-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-light);
+    margin-bottom: 10px;
+  }
+  .modal-summary {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--surface2);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 26px;
+    font-family: 'Lora', serif;
+    font-style: italic;
+  }
+
+  /* ── MODAL STAR RATING ── */
+  .rating-section {
+    text-align: center;
+    border-top: 1px solid var(--border);
+    padding-top: 22px;
+  }
+  .rating-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+  .stars-modal {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .stars-modal span {
+    font-size: 32px;
+    color: var(--star-off);
+    cursor: pointer;
+    transition: color .12s, transform .12s;
+    user-select: none;
+  }
+  .stars-modal span.lit { color: var(--star-on); }
+  .stars-modal span:hover { transform: scale(1.15); }
+
+  .rating-msg {
+    display: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2d7a4f;
+    background: #e8f7ef;
+    border-radius: 10px;
+    padding: 10px 18px;
+    margin-top: 6px;
+  }
+  .rating-msg.show { display: block; }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-light);
+    display: none;
+  }
+  .empty-state svg { opacity: 0.3; margin-bottom: 14px; }
+  .empty-state p { font-size: 1rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 24px 16px;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  /* ── SCROLL TO TOP ── */
+  #scrollTop {
+    position: fixed;
+    bottom: 22px; right: 18px;
+    width: 44px; height: 44px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(26,58,92,0.3);
+    z-index: 500;
+    transition: background .18s;
+  }
+  #scrollTop.visible { display: flex; }
+  #scrollTop:hover { background: var(--accent2); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="header-badge">🔬 2025-2026 Eğitim Öğretim Yılı</div>
+    <h1>Liselerde Bilim Uygulamaları Sergisi</h1>
+    <div class="header-themes">Sağlıklı Yaşam ve Beslenme / Yapay Zekâ</div>
+    <div class="coordinator-box">
+      <p>Koordinatör Okul: <strong>75. Yıl Fen Lisesi</strong></p>
+    </div>
+    <div class="header-stats">
+      <div class="stat"><span class="stat-num">22</span><span class="stat-lbl">Proje</span></div>
+      <div class="stat"><span class="stat-num">22</span><span class="stat-lbl">Takım</span></div>
+      <div class="stat"><span class="stat-num">⭐</span><span class="stat-lbl">Değerlendirin</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- SEARCH -->
+<div class="search-wrap">
+  <input class="search-box" type="text" id="searchInput" placeholder="Proje adı veya takım ara..." oninput="filterProjects()">
+</div>
+
+<!-- GRID -->
+<div class="grid-section">
+  <div class="grid-title">Tüm Projeler — 22 Sunum</div>
+  <div class="project-grid" id="projectGrid"></div>
+  <div class="empty-state" id="emptyState">
+    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M8 11h6M11 8v6" stroke-linecap="round"/></svg>
+    <p>Arama kriterinize uygun proje bulunamadı.</p>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal">
+    <div class="modal-img-wrap">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <img id="modalImg" src="" alt="">
+    </div>
+    <div class="modal-body">
+      <div class="modal-badge" id="modalBadge"></div>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-info-grid">
+        <div class="info-card">
+          <div class="info-card-label">👥 Takım Adı</div>
+          <div class="info-card-value" id="modalTeam"></div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">👤 Öğrenciler</div>
+          <div class="info-card-value" id="modalStudents"></div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">🎓 Danışman Öğretmen</div>
+          <div class="info-card-value" id="modalAdvisor"></div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">🏫 Okul</div>
+          <div class="info-card-value" id="modalSchool"></div>
+        </div>
+      </div>
+      <div class="modal-section-label">Proje Özeti</div>
+      <div class="modal-summary" id="modalSummary"></div>
+      <div class="rating-section">
+        <div class="rating-title">Bu projeyi değerlendirin</div>
+        <div class="stars-modal" id="modalStars"></div>
+        <div class="rating-msg" id="ratingMsg">✅ Teşekkürler, değerlendirmeniz alındı!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCROLL TO TOP -->
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<footer>
+  Liselerde Bilim Uygulamaları Sergisi &nbsp;|&nbsp; Tüm hakları saklıdır.
+</footer>
+
+<script>
+// ═══════════════════════════════════════════
+// VERİ — 22 PROJE (İçerikler sonradan eklenecek)
+// ═══════════════════════════════════════════
+const projects = [
+  {
+    id: 1,
+    image: "LBU_2026_SAYISAL_POSTERLER (1)/WhatsApp Image 2026-04-15 at 23.48.26.jpeg",
+    title: "Yapay Zeka: Geleceği Anlamak",
+    team: "Sirius",
+    students: "Naz Üçbudak, Tuğçe Kuz",
+    advisor: "Mustafa BARIŞSEVER",
+    school: "75. Yıl Fen Lisesi",
+    summary: "Bu proje, yapay zeka teknolojisinin temel kavramlarını, öne çıkan özelliklerini ve günlük yaşamdaki kullanım alanlarını anlaşılır bir dille sunar. Sağlık, eğitim, veri analizi ve otomasyon gibi alanlardaki katkıları ele alınırken; veri gizliliği, algoritmik önyargı ve iş gücü üzerindeki etkiler gibi etik boyutlar da vurgulanarak yapay zekanın gelecekteki önemi değerlendirilir."
+  },
+  {
+    id: 2,
+    image: "LBU_2026_SAYISAL_POSTERLER (1)/Eyüp Aygar Fen - LungNet Yapay Zekâ Poster.png",
+    title: "LungNet: Akciğer Grafiklerinden Derin Öğrenme ile Çoklu Hastalık Tespiti ve Karar Destek Sistemi",
+    team: "LungNet",
+    students: "İlker ÇOŞKUN, Kerem Mert TURGUT",
+    advisor: "Ercan HALAVUT",
+    school: "Eyüp Aygar Fen Lisesi",
+    summary: "Bu proje, akciğer röntgen görüntülerini derin öğrenme tabanlı CNN modeliyle Normal, Pnömoni, COVID-19 ve Tüberküloz sınıflarına ayıran bir karar destek sistemi geliştirir. Kaggle veri setiyle eğitilen model, kullanıcı dostu bir masaüstü arayüz üzerinden saniyeler içinde analiz yaparak sağlık personeline hızlı ön değerlendirme desteği sunmayı hedefler."
+  },
+  {
+    id: 3,
+    image: "LBU_2026_SAYISAL_POSTERLER (1)/Mut ONYAL - Manyetik Frenleme Sistemi Afiş.jpeg",
+    title: "Akıllı ulaşım sistemi ve trafik güvenliği",
+    team: "ONYAL kaşifleri",
+    students: "Sümeyye Sena Korkmaz, Esma Nur ASLAN",
+    advisor: "Kemal İNCE",
+    school: "Mut Osman Nuri Yalman Anadolu Lisesi",
+    summary: "Bu proje, eğimli ve ağır vasıta trafiğinin yoğun olduğu güzergahlarda fren arızası kaynaklı kazaları azaltmak amacıyla, asfalt altına belirli açı ve aralıklarla yerleştirilen neodyum mıknatısların oluşturduğu manyetik etkileşimi araç tonajına göre kademelendirilmiş kaçış şeritleriyle birleştiren yenilikçi bir model geliştirmekte, sürücüyü uyarı alanlarıyla doğru şeride yönlendirerek kontrolsüz hızlanmayı güvenli biçimde sönümlemeyi, özellikle kamyon ve tırlarda çarpışma riskini düşürmeyi, can ve mal kayıplarını önlemeyi, klasik kum havuzlu rampalara göre mekanik aşınma, bakım ve işletme maliyetlerini azaltmayı ve uzun vadede daha sürdürülebilir, uygulanabilir ve güvenli bir trafik altyapısı çözümü sunmayı hedeflemektedir."
+  },
+  {
+    id: 4,
+    image: "LBU_2026_SAYISAL_POSTERLER (1)/WhatsApp Image 2026-04-16 at 00.22.06.jpeg",
+    title: "Dengeli Beslenme ile Daha İyi Bir Yaşam",
+    team: "Cosmos",
+    students: "Hazal Yeter Çakmak, Şevval Şen, Cemre Aktay, Sevilay Dişbudak",
+    advisor: "Elif GÜLDİKEN",
+    school: "75. Yıl Fen Lisesi",
+    summary: "Bu proje, dengeli beslenme, yeterli su tüketimi, düzenli fiziksel aktivite ve bilinçli gıda seçiminin enerji düzeyi, bağışıklık, zihinsel performans ve uzun vadeli sağlık üzerindeki etkilerini ele alarak günlük yaşamda uygulanabilir sağlıklı alışkanlıklar geliştirmeyi amaçlamaktadır."
+  },
+  {
+    id: 5,
+    image: "LBU_2026_SAYISAL_POSTERLER (1)/Silifke Anadolu - Yapay Zekâ Poster.png",
+    title: "Yapay Zekâ",
+    team: "Zeka",
+    students: "Zeynep Defne ARI, Sena DOĞAN",
+    advisor: "Bekir YELLİGEDİK",
+    school: "Silifke Anadolu Lisesi",
+    summary: "Bu proje, yapay zekâ teknolojilerinin temel kavramlarını, tarihsel gelişimini, çalışma prensiplerini ve öğrenme türlerini ele alarak sağlık, eğitim, bankacılık ve otonom sistemler gibi güncel kullanım alanlarını örneklerle açıklamakta; aynı zamanda verimlilik artışı ve erken teşhis gibi faydalarla birlikte veri gizliliği, iş gücü kaybı ve algoritmik önyargı gibi riskleri değerlendirerek yapay zekânın etik ve sorumlu kullanımına yönelik farkındalık oluşturmayı amaçlamaktadır."
+  },
+  {
+    id: 6,
+    image: "LBU_2026_SAYISAL_POSTERLER (1)/Silifke Fen Lisesi - Afiş.png",
+    title: "MindFlow: Otonom Akademik Mentor ve Sınav Strateji Ajanı",
+    team: "MindFlow",
+    students: "Zeynep Nehir SARI, Zeynep Ilgın ÜNAL, Gamze Vuslat DÜMLÜ",
+    advisor: "Sevgi ORBAY",
+    school: "Silifke Fen Lisesi",
+    summary: "MindFlow, öğrencilerin deneme sonuçlarını analiz ederek eksik alt kazanımları belirleyen, öğrenme hızına göre dinamik çalışma planı oluşturan ve RAG tabanlı uzun süreli hafıza desteğiyle kişiselleştirilmiş akademik koçluk sunan yapay zeka tabanlı bir sınav strateji ajanıdır; sistem, doğrudan cevap vermek yerine Sokratik öğrenme yaklaşımıyla öğrencinin kavramsal farkındalığını artırmayı ve sınav kaygısını veri odaklı yöntemlerle yönetmeyi amaçlar."
+  },
+  {
+    id: 7,
+    image: "LBU_2026_SAYISAL_POSTERLER (1)/Şehit Ali Gümüş Fen - Yapay Zekâ ve İHA Afiş.png",
+    title: "Yapay Zeka Destekli İnsansız Hava Araçları",
+    team: "Gökyüzü Hakimi",
+    students: "Müslüme Şevval Uçgun",
+    advisor: "Ertan Cura",
+    school: "Şehit Ali Gümüş Fen Lisesi",
+    summary: "Bu proje, yapay zeka destekli insansız hava araçlarının görüntü işleme, otonom navigasyon ve karar verme süreçlerinde nasıl kullanıldığını doküman analizi yöntemiyle inceleyerek tarım, afet yönetimi, güvenlik ve lojistik gibi alanlardaki uygulamaları; hız, verimlilik ve riskli görevlerde insan hayatını koruma gibi avantajları; mahremiyet, veri güvenliği ve hukuki düzenleme ihtiyacı gibi etik risklerle birlikte değerlendirir."
+  },
+  {
+    id: 8,
+    image: "LBU_2026_SAYISAL_POSTERLER (1)/Tarsus - poster 2.png",
+    title: "Gençlerin Gözünden Sağlıklı Yaşam",
+    team: "Dinamik ve Sağlıklı Yaşam Ekibi",
+    students: "Fatih Efe KARABULUT, Elif Işıl GÜMÜŞ, Deha Can ÜNLÜDOĞAN, Ahmet AKSAY, Elif YILMAZ, Kıvanç ÖRDEK, Tolga AKTAŞ, Necip Yağız GÖVCE, Melek Rana İSTER, Ali Sait AKSAY, İklim DURDURAN, Ada Su GÖKALP",
+    advisor: "Cemil GÜMÜŞ",
+    school: "Tarsus BİŞUSSA Anadolu Lisesi",
+    summary: "Bu proje hakkında kısa bir özet buraya gelecek. Proje içeriği ve hedefleri hakkında bilgi verilecektir."
+  },
+  {
+    id: 9,
+    image: "LBU_2026_SAYISAL_POSTERLER (1)/Yahya Akel Fen - Artıksız Sofra Poster.png",
+    title: "Artıksız Sofra: Okul Yemekhanesinde İsraf Azaltma Projesi",
+    team: "Artıksız Sofra",
+    students: "Öykü Dinler, Nehir Fatma Küçkmen, Sarpcan Uzel, Göktuğ Kar",
+    advisor: "Gülsen TAN",
+    school: "Yahya Akel Fen Lisesi",
+    summary: "Artıksız Sofra projesi, pansiyonlu bir fen lisesinde gıda, kağıt ve plastik israfını azaltmak amacıyla öğrencilerin günlük nöbetlerle atık miktarını ölçtüğü, farkındalık çalışmaları yürüttüğü ve paydaş kurum desteğiyle sürdürülebilir bir okul modeli geliştirdiği uygulama olup kişi başı atık miktarını Aralık ayındaki 0,13 kg düzeyinden Şubat ayında 0,06-0,09 kg aralığına düşürmeyi başarmıştır."
+  },
+  {
+    id: 10,
+    image: "LBU_2026_SAYISAL_POSTERLER (1)/YKAL - Ergenlikte Beslenme Alışkanlıkları Poster.png",
+    title: "Ergenlik Döneminde Beslenme Alışkanlıkları",
+    team: "Ergenlikte Beslenme",
+    students: "Cemal Baran TANDOĞAN, Kayra Fatin SARUHAN",
+    advisor: "Aylin GÜVEN",
+    school: "Yusuf Kalkavan Anadolu Lisesi",
+    summary: "Bu proje, ergenlik dönemindeki bireylerin beslenme alışkanlıklarını inceleyerek fast food tüketimi, aile ve okul ortamı, sosyal medya etkisi ve sağlıklı beslenme bilgi düzeyi gibi etmenlerin fiziksel-zihinsel gelişim üzerindeki etkilerini ortaya koymayı amaçlamakta; 64 maddelik adölesan beslenme alışkanlıkları ölçeği ile anket verilerini betimsel istatistik yöntemleriyle değerlendirerek sağlıklı beslenme farkındalığına katkı sunmaktadır."
+  },
+  {
+    id: 11,
+    image: "LBU_2026_SAYISAL_POSTERLER (1)/YKAL - Yapay Zekâ ve Etik Poster.png",
+    title: "Yapay Zeka: Temeller, Riskler ve Etik Boyut",
+    team: "Yapay Zekâ ve Etik",
+    students: "Fatmanur ÖZARSLAN",
+    advisor: "Fatmanur ÖZARSLAN",
+    school: "Yusuf Kalkavan Anadolu Lisesi",
+    summary: "Bu proje, yapay zekanın temel çalışma prensiplerini ve LLM mimarisini açıklarken halüsinasyon, dezenformasyon, algoritmik önyargı, gizlilik ihlali ve çevresel etki gibi kritik risk alanlarını teknik ve etik açıdan değerlendirmekte; şeffaf-denetlenebilir algoritmalar, veri minimizasyonu, insan gözetimi, açıklanabilir yapay zeka ve sürdürülebilirlik ilkeleri üzerinden insan merkezli ve sorumlu yapay zeka kullanımına yönelik bir farkındalık çerçevesi sunmaktadır."
+  },
+  {
+    id: 12,
+    image: "afis_placeholder.jpg",
+    title: "Anamur Sağlıklı Yaşam",
+    team: "Sağlıklı Yaşam",
+    students: "Göknil ŞAHİN, Mehmet Kerem GÖKÇEN, Serhan ERİŞ, Nehir TORU",
+    advisor: "Ahmet GÖKÇEN",
+    school: "Anamur Anadolu Lisesi",
+    summary: "Bu proje hakkında bilgilendirme eklenecektir."
+  },
+  {
+    id: 13,
+    image: "afis_placeholder.jpg",
+    title: "Coğrafik Konumun, Beslenme Kültürünün, Ortalama Ömür Uzunluğuna Etkisi",
+    team: "EFL'28",
+    students: "Lorin Asmin VARIŞLI",
+    advisor: "Faruk KILIÇ",
+    school: "Erdemli Borsa İstanbul Fen Lisesi",
+    summary: "Bu proje hakkında bilgilendirme eklenecektir."
+  },
+  {
+    id: 14,
+    image: "afis_placeholder.jpg",
+    title: "Gençlerin Sağlıklı Yaşam Vazgeçilmezleri",
+    team: "Longevity",
+    students: "Sıla VERGİLİ",
+    advisor: "Salih ÖMÜR",
+    school: "Sesim Sarpkaya Fen Lisesi",
+    summary: "Bu proje hakkında bilgilendirme eklenecektir."
+  },
+  {
+    id: 15,
+    image: "afis_placeholder.jpg",
+    title: "Güneş Enerjisi ile Elektrikli Bisiklet Şarj İstasyonu",
+    team: "Temiz Enerji Gençliği",
+    students: "Ayşe UYSAL, Mustafa Öcal KARAER",
+    advisor: "İbrahim KOCA",
+    school: "Mut Osman Nuri Yalman Anadolu Lisesi",
+    summary: "Bu proje hakkında bilgilendirme eklenecektir."
+  },
+  {
+    id: 16,
+    image: "afis_placeholder.jpg",
+    title: "Mikro Plastik İçermeyen Kompostlaştırılabilen, Çevre Dostu Muz Lifi İçerikli Poşet Çay Ambalajı",
+    team: "LeafTech",
+    students: "Ayşe Ecem NURDAN, Hüseyin Tuna ÖZCAN",
+    advisor: "Zehra ŞEKERCİ",
+    school: "İçel Anadolu Lisesi",
+    summary: "Bu proje hakkında bilgilendirme eklenecektir."
+  },
+  {
+    id: 17,
+    image: "afis_placeholder.jpg",
+    title: "Sağlıklı Yaşam ve Dengeli Beslenme",
+    team: "Doğal Denge",
+    students: "Eymür İrem UĞUZ, Elif Naz BALKAN",
+    advisor: "Mustafa ÇERÇİ",
+    school: "Silifke Anadolu Lisesi",
+    summary: "Bu proje hakkında bilgilendirme eklenecektir."
+  },
+  {
+    id: 18,
+    image: "afis_placeholder.jpg",
+    title: "Sağlıklı Yaşam İçin Alkali Beslenmenin Alt Mikroskobik Seviyede Kimyası",
+    team: "ETKİN",
+    students: "Elifnur ATALAY, Ceren GÖK, Hülya Su KARAKUYU, Eylül MİROĞLU",
+    advisor: "İnci EKER",
+    school: "Tarsus Şehit Halil Özdemir Fen Lisesi",
+    summary: "Bu proje hakkında bilgilendirme eklenecektir."
+  },
+  {
+    id: 19,
+    image: "afis_placeholder.jpg",
+    title: "Yapay Zekânın Ekolojik Ayak İzi",
+    team: "EFL PROJE",
+    students: "Muhammed Talha CİCİ, Zeynep ZENGİN, Bengisu DERE, Saime Erva BOZKURT",
+    advisor: "Celal YAMAN",
+    school: "Erdemli Borsa İstanbul Fen Lisesi",
+    summary: "Bu proje hakkında bilgilendirme eklenecektir."
+  },
+  {
+    id: 20,
+    image: "afis_placeholder.jpg",
+    title: "Yaşamına Sağlık Kat – Beslenmeni Şekillendir, Hayatını Güçlendir",
+    team: "—",
+    students: "Senem YUMRU, Yasemin ŞAHİN",
+    advisor: "Hatice DENİZ",
+    school: "Şehit İbrahim Armut Fen Lisesi",
+    summary: "Bu proje hakkında bilgilendirme eklenecektir."
+  },
+  {
+    id: 21,
+    image: "afis_placeholder.jpg",
+    title: "Öğrencilerde Beslenme",
+    team: "Beslenme Günlüğü",
+    students: "Gökçe ŞEŞEN, Ümmühan ÜNLÜ",
+    advisor: "Yeşim YILDOĞAN",
+    school: "Anamur Anadolu Lisesi",
+    summary: "Bu proje hakkında bilgilendirme eklenecektir."
+  },
+  {
+    id: 22,
+    image: "afis_placeholder.jpg",
+    title: "İnsanlık İçin Adil, Şeffaf ve Güvenli Yapay Zekâ",
+    team: "Code of Conscience",
+    students: "Tolga Doruk İNCİK, Berke Kaan DUYKU, Ali Eren GÜNERİ, Ali KAYA",
+    advisor: "Tolga İNCİK",
+    school: "MTSO Anadolu Lisesi",
+    summary: "Bu proje hakkında bilgilendirme eklenecektir."
+  }
+];
+
+// ═══════════════════════════════════════════
+// KART OLUŞTUR
+// ═══════════════════════════════════════════
+function buildCard(p) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.dataset.id = p.id;
+  card.innerHTML = `
+    <div class="card-img-wrap">
+      <span class="card-no">#${String(p.id).padStart(2,'0')}</span>
+      <img src="${p.image}" alt="${p.title}" onerror="this.parentNode.innerHTML='<span class=\\'card-no\\'>#${String(p.id).padStart(2,'0')}</span><div class=\\'img-placeholder\\'><svg width=\\'40\\' height=\\'40\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1.5\\'><rect x=\\'3\\' y=\\'3\\' width=\\'18\\' height=\\'18\\' rx=\\'3\\'/><path d=\\'M8 12h8M12 8v8\\'/></svg><span>Afiş yükleniyor</span></div>'">
+    </div>
+    <div class="card-body">
+      <div class="card-tag">🏫 ${p.team}</div>
+      <div class="card-title">${p.title}</div>
+      <div class="card-summary">${p.summary}</div>
+      <div class="card-footer">
+        <div class="stars-display" id="stars-card-${p.id}">${buildStarsHTML(p.id, 'card')}</div>
+        <button class="btn-detail" onclick="openModal(${p.id})">Detay →</button>
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+function buildStarsHTML(id, type) {
+  return [1,2,3,4,5].map(i =>
+    `<span data-val="${i}" onclick="rateCard(${id},${i},'${type}')" title="${i} yıldız">★</span>`
+  ).join('');
+}
+
+// ═══════════════════════════════════════════
+// YILDIZ DEĞERLENDİRME (KART)
+// ═══════════════════════════════════════════
+const cardRatings = {};
+function rateCard(id, val, type) {
+  cardRatings[id] = val;
+  if (type === 'card') {
+    const container = document.getElementById(`stars-card-${id}`);
+    if (!container) return;
+    container.querySelectorAll('span').forEach((s,i) => {
+      s.classList.toggle('lit', i < val);
+    });
+  }
+}
+
+// ═══════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════
+let currentProjectId = null;
+
+function openModal(id) {
+  const p = projects.find(x => x.id === id);
+  if (!p) return;
+  currentProjectId = id;
+
+  document.getElementById('modalImg').src = p.image;
+  document.getElementById('modalImg').alt = p.title;
+  document.getElementById('modalBadge').textContent = `Proje #${String(p.id).padStart(2,'0')}`;
+  document.getElementById('modalTitle').textContent = p.title;
+  document.getElementById('modalTeam').textContent = p.team;
+  document.getElementById('modalStudents').textContent = p.students;
+  document.getElementById('modalAdvisor').textContent = p.advisor;
+  document.getElementById('modalSchool').textContent = p.school;
+  document.getElementById('modalSummary').textContent = p.summary;
+
+  // Modal yıldızları
+  const starsContainer = document.getElementById('modalStars');
+  starsContainer.innerHTML = [1,2,3,4,5].map(i =>
+    `<span data-val="${i}" onclick="rateModal(${i})" title="${i} yıldız">★</span>`
+  ).join('');
+
+  // Daha önce oy verdiyse göster
+  const prev = cardRatings[id];
+  if (prev) {
+    starsContainer.querySelectorAll('span').forEach((s,i) => s.classList.toggle('lit', i < prev));
+  }
+
+  document.getElementById('ratingMsg').classList.remove('show');
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function rateModal(val) {
+  cardRatings[currentProjectId] = val;
+  // Modal yıldızları güncelle
+  document.getElementById('modalStars').querySelectorAll('span').forEach((s,i) => {
+    s.classList.toggle('lit', i < val);
+  });
+  // Kart yıldızları güncelle
+  const cardStars = document.getElementById(`stars-card-${currentProjectId}`);
+  if (cardStars) {
+    cardStars.querySelectorAll('span').forEach((s,i) => s.classList.toggle('lit', i < val));
+  }
+  // Teşekkür mesajı
+  const msg = document.getElementById('ratingMsg');
+  msg.classList.add('show');
+  setTimeout(() => msg.classList.remove('show'), 3500);
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+// ESC ile kapat
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ═══════════════════════════════════════════
+// ARAMA / FİLTRE
+// ═══════════════════════════════════════════
+function filterProjects() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const grid = document.getElementById('projectGrid');
+  let visible = 0;
+  grid.querySelectorAll('.card').forEach(card => {
+    const id = parseInt(card.dataset.id);
+    const p = projects.find(x => x.id === id);
+    const match = !q ||
+      p.title.toLowerCase().includes(q) ||
+      p.team.toLowerCase().includes(q) ||
+      p.students.toLowerCase().includes(q) ||
+      p.school.toLowerCase().includes(q);
+    card.style.display = match ? '' : 'none';
+    if (match) visible++;
+  });
+  document.getElementById('emptyState').style.display = visible === 0 ? 'block' : 'none';
+}
+
+// ═══════════════════════════════════════════
+// SCROLL TO TOP
+// ═══════════════════════════════════════════
+window.addEventListener('scroll', () => {
+  document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 400);
+});
+
+// ═══════════════════════════════════════════
+// INIT — KARTLARI RENDER ET
+// ═══════════════════════════════════════════
+(function init() {
+  const grid = document.getElementById('projectGrid');
+  projects.forEach(p => grid.appendChild(buildCard(p)));
+})();
+</script>
+</body>
+</html>

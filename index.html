@@ -815,17 +815,20 @@ function buildCard(p) {
 }
 
 function buildStarsHTML(id, type) {
+  const currentRating = cardRatings[id] || 0;
   return [1,2,3,4,5].map(i =>
-    `<span data-val="${i}" onclick="rateCard(${id},${i},'${type}')" title="${i} yıldız">★</span>`
+    `<span class="${i <= currentRating ? 'lit' : ''}" data-val="${i}" onclick="rateCard(${id},${i},'${type}')" title="${i} yıldız">★</span>`
   ).join('');
 }
 
 // ═══════════════════════════════════════════
 // YILDIZ DEĞERLENDİRME (KART)
 // ═══════════════════════════════════════════
-const cardRatings = {};
+let cardRatings = JSON.parse(localStorage.getItem('lbu_ratings') || '{}');
+
 function rateCard(id, val, type) {
   cardRatings[id] = val;
+  localStorage.setItem('lbu_ratings', JSON.stringify(cardRatings));
   if (type === 'card') {
     const container = document.getElementById(`stars-card-${id}`);
     if (!container) return;
@@ -874,6 +877,7 @@ function openModal(id) {
 
 function rateModal(val) {
   cardRatings[currentProjectId] = val;
+  localStorage.setItem('lbu_ratings', JSON.stringify(cardRatings));
   // Modal yıldızları güncelle
   document.getElementById('modalStars').querySelectorAll('span').forEach((s,i) => {
     s.classList.toggle('lit', i < val);
